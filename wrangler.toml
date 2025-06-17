@@ -4,5 +4,6 @@ assets.directory = "./"
 dev.port = 3000
 routes = [
   { pattern = "githus.com", custom_domain = true },
-  { pattern = "www.githus.com", custom_domain = true }
+  { pattern = "www.githus.com", custom_domain = true },
+  { pattern = "b2b.githus.com", custom_domain = true }
 ]
