@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GitHus - Code Context Intelligence Platform</title>
+    <style>
+        :root {
+            --color-canvas-default: #ffffff;
+            --color-border-default: #d0d7de;
+            --color-fg-default: #24292f;
+            --color-accent-fg: #0969da;
+            --color-accent-emphasis: #0969da;
+            --color-success-fg: #1a7f37;
+            --color-fg-muted: #57606a;
+            --color-canvas-subtle: #f6f8fa;
+            --color-scale-green-1: #dafbe1;
+            --color-scale-blue-1: #ddf4ff;
+            --color-scale-purple-1: #fbefff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+            background-color: var(--color-canvas-default);
+            color: var(--color-fg-default);
+            line-height: 1.6;
+            font-size: 14px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 16px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--color-fg-default);
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: var(--color-fg-muted);
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .pricing-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 60px;
+        }
+
+        .pricing-card {
+            background-color: var(--color-canvas-default);
+            border: 1px solid var(--color-border-default);
+            border-radius: 6px;
+            padding: 24px;
+            width: 350px;
+            transition: box-shadow 0.2s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .pricing-card:hover {
+            box-shadow: 0 8px 24px rgba(140, 149, 159, 0.2);
+        }
+
+        .free-card {
+            background-color: var(--color-scale-blue-1);
+        }
+
+        .team-card {
+            background-color: var(--color-scale-green-1);
+        }
+
+        .enterprise-card {
+            background-color: var(--color-scale-purple-1);
+        }
+
+        .card-header {
+            margin-bottom: 24px;
+        }
+
+        .price {
+            font-size: 32px;
+            font-weight: 600;
+            color: var(--color-fg-default);
+            margin-bottom: 8px;
+        }
+
+        .plan-name {
+            font-size: 20px;
+            font-weight: 600;
+            color: var(--color-fg-default);
+        }
+
+        .plan-duration {
+            font-size: 14px;
+            color: var(--color-fg-muted);
+            margin-top: 4px;
+        }
+
+        .card-body {
+            margin-bottom: 24px;
+        }
+
+        .feature-list {
+            list-style: none;
+        }
+
+        .feature-list li {
+            margin-bottom: 12px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .feature-list li::before {
+            content: "✓";
+            color: var(--color-success-fg);
+            margin-right: 8px;
+            font-weight: bold;
+        }
+
+        .card-footer {
+            text-align: center;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: var(--color-accent-emphasis);
+            color: #ffffff;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 6px;
+            text-decoration: none;
+            transition: background-color 0.2s ease;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background-color: #0550ae;
+        }
+
+        .btn-secondary {
+            background-color: var(--color-canvas-subtle);
+            color: var(--color-fg-default);
+            border: 1px solid var(--color-border-default);
+        }
+
+        .btn-secondary:hover {
+            background-color: #e1e4e8;
+        }
+
+        .recommended-badge {
+            position: absolute;
+            top: 12px;
+            right: -30px;
+            background-color: var(--color-accent-emphasis);
+            color: white;
+            font-size: 12px;
+            padding: 5px 40px;
+            transform: rotate(45deg);
+            font-weight: 600;
+        }
+
+        .slider-container {
+            margin: 24px 0;
+        }
+
+        .slider {
+            width: 100%;
+            height: 6px;
+            background-color: #eaeef2;
+            border-radius: 3px;
+            appearance: none;
+            outline: none;
+        }
+
+        .slider::-webkit-slider-thumb {
+            appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: var(--color-accent-emphasis);
+            cursor: pointer;
+        }
+
+        .slider-labels {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--color-fg-muted);
+        }
+
+        .slider-value {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 12px;
+            color: var(--color-accent-emphasis);
+        }
+
+        .faq-section {
+            margin-top: 80px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .faq-header {
+            text-align: center;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 40px;
+            color: var(--color-fg-default);
+        }
+
+        .faq-item {
+            margin-bottom: 24px;
+            border-bottom: 1px solid var(--color-border-default);
+            padding-bottom: 16px;
+        }
+
+        .faq-question {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: var(--color-fg-default);
+        }
+
+        .faq-answer {
+            font-size: 14px;
+            color: var(--color-fg-muted);
+        }
+
+        footer {
+            margin-top: 80px;
+            text-align: center;
+            padding: 24px 0;
+            border-top: 1px solid var(--color-border-default);
+        }
+
+        .footer-text {
+            font-size: 14px;
+            color: var(--color-fg-muted);
+            margin-top: 12px;
+        }
+
+        .github-logo {
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+        }
+
+        @media (max-width: 768px) {
+            .pricing-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .pricing-card {
+                width: 100%;
+                max-width: 350px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <header>
+            <h1>GitHus - Code Context Intelligence Platform</h1>
+            <p class="subtitle">Transform your codebase into actionable intelligence with semantic code search, SQL
+                analytics, and contextual insights for your entire organization.</p>
+        </header>
+
+        <div class="pricing-container">
+            <div class="pricing-card free-card">
+                <div class="card-header">
+                    <div class="price">$0</div>
+                    <div class="plan-name">Individual Developer</div>
+                    <div class="plan-duration">Always free</div>
+                </div>
+                <div class="card-body">
+                    <ul class="feature-list">
+                        <li>Access to uithub for public repositories</li>
+                        <li>GitHub code context for LLM queries</li>
+                        <li>Access to all forgithub.com tools</li>
+                        <li>Basic API access (rate limited)</li>
+                        <li>Community support</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="/" class="btn">Get Started</a>
+                </div>
+            </div>
+
+            <div class="pricing-card team-card">
+                <div class="card-header">
+                    <div class="price">$500<span class="plan-duration">/month</span></div>
+                    <div class="plan-name">Team</div>
+                    <div class="plan-duration">For startups and small teams</div>
+                </div>
+                <div class="card-body">
+                    <ul class="feature-list">
+                        <li>Full sync of all repositories (public & private)</li>
+                        <li>Up to 5 user accounts</li>
+                        <li>Comprehensive API access</li>
+                        <li>Real-time code context updates</li>
+                        <li>SQL access to code intelligence database</li>
+                        <li>Advanced semantic code search</li>
+                        <li>Priority support</li>
+                        <li>Shared team dashboard</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="/contact" class="btn">Contact Sales</a>
+                </div>
+            </div>
+
+            <div class="pricing-card enterprise-card">
+                <div class="recommended-badge">Popular</div>
+                <div class="card-header">
+                    <div class="price">Custom</div>
+                    <div class="plan-name">Enterprise</div>
+                    <div class="plan-duration">For organizations with advanced needs</div>
+                </div>
+                <div class="card-body">
+                    <div class="slider-container">
+                        <input type="range" min="5" max="50" value="10" class="slider" id="priceSlider">
+                        <div class="slider-labels">
+                            <span>Starting at $5,000</span>
+                            <span>$50,000+</span>
+                        </div>
+                        <div class="slider-value">
+                            <span>Based on datapoints and LLM usage</span>
+                            <div>$<span id="priceAmount">10,000</span>/month</div>
+                        </div>
+                    </div>
+                    <ul class="feature-list">
+                        <li>Unlimited repositories and users</li>
+                        <li>Enterprise-grade API with SLA</li>
+                        <li>Advanced business intelligence dashboards</li>
+                        <li>Custom LLM integration & training</li>
+                        <li>Direct database access with visualization tools</li>
+                        <li>Code intelligence & quality metrics</li>
+                        <li>SDLC optimization insights</li>
+                        <li>Custom integrations with existing tools</li>
+                        <li>SSO and advanced security controls</li>
+                        <li>Dedicated account manager</li>
+                        <li>24/7 premium support</li>
+                    </ul>
+                </div>
+                <div class="card-footer">
+                    <a href="/enterprise" class="btn">Talk to Sales</a>
+                </div>
+            </div>
+        </div>
+
+        <section class="faq-section">
+            <h2 class="faq-header">Frequently Asked Questions</h2>
+
+            <div class="faq-item">
+                <div class="faq-question">What is GitHus and how does it differ from GitHub?</div>
+                <div class="faq-answer">
+                    GitHus is a code context intelligence platform that works alongside GitHub to transform your
+                    repositories into a structured, queryable knowledge base. While GitHub stores your code, GitHus
+                    analyzes it to create business intelligence, enabling semantic search, SQL analytics, and contextual
+                    insights across your entire codebase.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How does the Enterprise plan pricing work?</div>
+                <div class="faq-answer">
+                    Enterprise pricing starts at $5,000/month and scales based on the volume of code data points
+                    processed and LLM usage. Factors that influence pricing include the number of repositories,
+                    frequency of updates, historical data retention needs, and advanced features usage. Our sales team
+                    will work with you to create a custom plan that fits your organization's specific requirements.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">What kind of insights can I get with SQL access to my code?</div>
+                <div class="faq-answer">
+                    With direct SQL access to your code intelligence database, you can run complex queries to discover
+                    patterns across your codebase such as dependency usage, code quality metrics, developer
+                    productivity, technical debt indicators, security vulnerability patterns, and much more. You can
+                    build custom dashboards and integrate with your existing BI tools to gain unprecedented visibility
+                    into your software development lifecycle.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">How does GitHus handle security and privacy?</div>
+                <div class="faq-answer">
+                    GitHus takes security and privacy extremely seriously. We never store your actual source code - only
+                    the processed context and metadata. All data is encrypted at rest and in transit. Enterprise plans
+                    include advanced security features such as VPC isolation, custom retention policies, and compliance
+                    certifications. We can also deploy in your own environment for maximum security control.
+                </div>
+            </div>
+
+            <div class="faq-item">
+                <div class="faq-question">Can I integrate GitHus with my existing development workflow?</div>
+                <div class="faq-answer">
+                    Absolutely. GitHus is designed to complement your existing tools and workflows. We provide
+                    integrations with popular IDEs, CI/CD pipelines, project management tools, and business intelligence
+                    platforms. Our API allows for custom integrations with any systems specific to your organization.
+                    Enterprise customers receive custom integration support from our solutions team.
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <svg class="github-logo" viewBox="0 0 16 16" fill="currentColor">
+                <path fill-rule="evenodd"
+                    d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z">
+                </path>
+            </svg>
+            <p class="footer-text">GitHus - Transforming Code into Intelligence</p>
+        </footer>
+    </div>
+
+    <script>
+        const slider = document.getElementById("priceSlider");
+        const priceAmount = document.getElementById("priceAmount");
+
+        slider.oninput = function () {
+            const price = this.value * 1000;
+            priceAmount.textContent = price.toLocaleString();
+        }
+    </script>
+</body>
+
+</html>
